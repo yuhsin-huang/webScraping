@@ -2,11 +2,9 @@
 
 from scrapy.spiders import Spider
 from scrapy.http import Request
-from scrapy.linkextractors import LinkExtractor
 
 class ImdbSpider(Spider):
     name = 'imdb_spider'
-    
     start_urls = ['https://www.imdb.com/title/tt1375666/']
 
     def parse(self,response):
@@ -51,9 +49,10 @@ class ImdbSpider(Spider):
         """
         actor_name = response.css("span.itemprop::text").get()
 
-        for quote in response.css("div.filmo-row"):    
-            movie_or_TV_name = quote.css("a::text").getall()
-            
+        for quote in response.css("div.filmo-row"): 
+            # id = response.css("div.filmo-row::attr(id)").get()
+            # if id[0:5] == "actor":
+            movie_or_TV_name = quote.css("a::text").get()
             yield {
                 "actor" : actor_name,
                 "movie_or_TV_name": movie_or_TV_name
