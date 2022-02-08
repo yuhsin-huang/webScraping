@@ -5,12 +5,12 @@ from scrapy.http import Request
 
 class ImdbSpider(Spider):
     """
-    A simple spider class that navigate from a movie website to its full cast. Then scrapt all the works each actors have 
+    A simple spider class that navigate from a movie website to its full cast. Then scrape all the works each actors have 
     worked on.
 
     This spider works as follows. 
     - The parse method handles the navigation to the full credit of the movie.
-    - The parse_full_credits method scrapts the links of all the actor profiles, and navigate through all of them.
+    - The parse_full_credits method scrapes the links of all the actor profiles, and navigate through all of them.
     - The parse_actor_page method returns a dictionary that contains all the works each actors has worked on. 
     
     The spider will then create a dictionary called results.csv in the directory.
@@ -64,15 +64,15 @@ class ImdbSpider(Spider):
         the actor has worked on. The dictionary will have two key-value pairs, of the form {"actor" : actor_name, 
         "movie_or_TV_name" : movie_or_TV_name}. 
         """
-        # scrapt the actor name using CSS selector: it is the text in span.itemprop
+        # scrape the actor name using CSS selector: it is the text in span.itemprop
         actor_name = response.css("span.itemprop::text").get()
 
-        # scrapt all the movie or TV name the actors has worked on 
+        # scrape all the movie or TV name the actors has worked on 
         # each filmo_row division contains one work, so we loop through all the divisions
         for quote in response.css("div.filmo-row"): 
             # get the first text in the division, which is the title of the movie or TV
             movie_or_TV_name = quote.css("a::text").get()
-            
+
             # yield the dictionary
             yield {
                 "actor" : actor_name,
